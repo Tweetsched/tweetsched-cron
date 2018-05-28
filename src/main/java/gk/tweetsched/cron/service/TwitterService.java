@@ -1,4 +1,4 @@
-package gk.tweetsched.service;
+package gk.tweetsched.cron.service;
 
 /**
  * TwitterService class.
