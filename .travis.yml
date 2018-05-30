@@ -3,6 +3,9 @@ jdk: oraclejdk8
 
 script:
   mvn package
+
+after_success:
+  - "./scripts/deploy.sh"
   
 branches:
   only:
