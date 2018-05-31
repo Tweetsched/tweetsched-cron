@@ -1,6 +1,11 @@
 package gk.tweetsched.cron.service;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.Protocol;
 
 import static gk.tweetsched.cron.util.Constants.REDIS_URL;
 import static gk.tweetsched.cron.util.Constants.REDIS_PORT;
@@ -20,26 +25,37 @@ import java.util.Map.Entry;
  * @author Gleb Kosteiko.
  */
 public class QueueService {
+    private static final Logger LOGGER = LogManager.getLogger(QueueService.class);
     private TwitterService twitterService = new TwitterService();
+    private JedisPool pool;
 
-    public QueueService() {}
+    public QueueService() {
+        this.pool = new JedisPool(
+                new JedisPoolConfig(),
+                System.getenv(REDIS_URL),
+                Integer.valueOf(System.getenv(REDIS_PORT)),
+                Protocol.DEFAULT_TIMEOUT,
+                System.getenv(REDIS_PASSWORD));
+    }
 
     public void processNext() {
-        Jedis jedis = new Jedis(System.getenv(REDIS_URL),
-                Integer.valueOf(System.getenv(REDIS_PORT)));
-        jedis.auth(System.getenv(REDIS_PASSWORD));
-
-        List<Entry<String, String>> result = jedis.hscan(TWEETS_HASH, SCAN_POINTER_START).getResult();
-        if (result.isEmpty()) {
-            return;
+        try (Jedis jedis = pool.getResource()) {
+            List<Entry<String, String>> result = jedis.hscan(TWEETS_HASH, SCAN_POINTER_START).getResult();
+            if (result.isEmpty()) {
+                return;
+            }
+            Entry<String, String> tweetEntry = result.get(0);
+            String id = tweetEntry.getKey();
+            String tweet = tweetEntry.getValue();
+            boolean isSuccess = twitterService.publishTweet(tweet);
+            if (isSuccess) {
+                jedis.hdel(TWEETS_HASH, id);
+                LOGGER.info("Tweet was posted");
+            } else {
+                LOGGER.error("Tweet was not posted");
+            }
+        } catch (Exception e) {
+            LOGGER.error(e);
         }
-        Entry<String, String> tweetEntry = result.get(0);
-        String id = tweetEntry.getKey();
-        String tweet = tweetEntry.getValue();
-        boolean isSuccess = twitterService.publishTweet(tweet);
-        if (isSuccess) {
-            jedis.hdel(TWEETS_HASH, id);
-        }
-        jedis.close();
     }
 }
