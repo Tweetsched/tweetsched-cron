@@ -13,5 +13,12 @@ Cron jobs service for the Scheduled Tweets service.
 `mvn clean package`
 
 ## How to run locally:
-
-`java -jar target/tweetsched-cron-0.1-SNAPSHOT.jar`
+- Configure next environment variables:
+  - REDIS_URL
+  - REDIS_PORT
+  - REDIS_PASSWORD
+  - OAUTH_CONSUMER_KEY
+  - OAUTH_CONSUMER_SECRET
+  - OAUTH_ACCESS_TOKEN
+  - OAUTH_ACCESS_TOKEN_SECRET
+- Run `java -jar target/tweetsched-cron-0.1-SNAPSHOT.jar`
