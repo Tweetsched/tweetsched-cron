@@ -14,6 +14,7 @@ Cron jobs service for the Scheduled Tweets service.
 
 ## How to run locally:
 - Configure next environment variables:
+  - CRON_EXPRESSION
   - REDIS_URL
   - REDIS_PORT
   - REDIS_PASSWORD
