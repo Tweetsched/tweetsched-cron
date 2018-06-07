@@ -22,4 +22,5 @@ public class Constants {
     public static final String CRON_EXPRESSION = "CRON_EXPRESSION";
 
     public static final String TWEETS_HASH = "tweets";
+    public static final String MESSAGE = "message";
 }

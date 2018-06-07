@@ -26,7 +26,7 @@ public class TwitterService {
 
     public TwitterService() {
         ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setDebugEnabled(true)
+        cb.setDebugEnabled(false)
                 .setOAuthConsumerKey(System.getenv(OAUTH_CONSUMER_KEY))
                 .setOAuthConsumerSecret(System.getenv(OAUTH_CONSUMER_SECRET))
                 .setOAuthAccessToken(System.getenv(OAUTH_ACCESS_TOKEN))
