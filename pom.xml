@@ -12,6 +12,7 @@
         <spring.version>5.0.6.RELEASE</spring.version>
         <jedis-version>2.9.0</jedis-version>
         <twitter4j-versoin>4.0.6</twitter4j-versoin>
+        <gson-versoin>2.8.5</gson-versoin>
         <log4j-version>2.11.0</log4j-version>
         <junit.version>4.12</junit.version>
         <compiler.plugin.version>3.7.0</compiler.plugin.version>
@@ -34,6 +35,11 @@
             <groupId>org.twitter4j</groupId>
             <artifactId>twitter4j-core</artifactId>
             <version>${twitter4j-versoin}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>${gson-versoin}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
