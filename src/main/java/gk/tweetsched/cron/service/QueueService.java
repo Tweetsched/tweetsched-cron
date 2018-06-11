@@ -46,6 +46,7 @@ public class QueueService {
         try (Jedis jedis = pool.getResource()) {
             List<Entry<String, String>> result = jedis.hscan(TWEETS_HASH, SCAN_POINTER_START).getResult();
             if (result.isEmpty()) {
+                LOGGER.info("Tweets queue is empty");
                 return;
             }
             Entry<String, String> tweetEntry = result.get(0);
