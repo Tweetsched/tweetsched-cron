@@ -4,10 +4,14 @@ import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.Protocol;
+
+import javax.annotation.PostConstruct;
 
 import static gk.tweetsched.cron.util.Constants.REDIS_URL;
 import static gk.tweetsched.cron.util.Constants.REDIS_PORT;
@@ -27,19 +31,24 @@ import java.util.Map.Entry;
  *
  * @author Gleb Kosteiko.
  */
+@Service
 public class QueueService {
     private static final Logger LOGGER = LogManager.getLogger(QueueService.class);
-    private TwitterService twitterService = new TwitterService();
+    @Autowired
+    private PropertyService propService;
+    @Autowired
+    private TwitterService twitterService;
     private JedisPool pool;
     private Gson gson = new Gson();
 
-    public QueueService() {
+    @PostConstruct
+    private void init() {
         this.pool = new JedisPool(
                 new JedisPoolConfig(),
-                System.getenv(REDIS_URL),
-                Integer.valueOf(System.getenv(REDIS_PORT)),
+                propService.getProp(REDIS_URL),
+                Integer.valueOf(propService.getProp(REDIS_PORT)),
                 Protocol.DEFAULT_TIMEOUT,
-                System.getenv(REDIS_PASSWORD));
+                propService.getProp(REDIS_PASSWORD));
     }
 
     public void processNext() {
