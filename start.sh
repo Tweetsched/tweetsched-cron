@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 nohup java -jar tweetsched-cron-1.0.jar &
 PID=$!
