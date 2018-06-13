@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="full">
+    <test name="tweetsched-cron-unit-tests">
+        <packages>
+            <package name="gk.tweetsched.cron.service"/>
+        </packages>
+    </test>
+</suite>
