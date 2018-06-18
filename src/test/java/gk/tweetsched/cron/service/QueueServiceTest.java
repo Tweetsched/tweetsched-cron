@@ -37,8 +37,6 @@ public class QueueServiceTest {
     @Mock
     private Jedis jedis;
     @Mock
-    private PropertyService propService;
-    @Mock
     private TwitterService twitterService;
     @Mock
     private JedisPool pool;
@@ -67,11 +65,9 @@ public class QueueServiceTest {
 
     @Test
     public void testProcessNext() {
-        List<Map.Entry<String, String>> result = new ArrayList<>();
         Map<String, String> resultsMap = new HashMap<>();
         resultsMap.put(TEST_TWEET_ID, TEST_TWEET);
         scanResults = new ScanResult(new byte[0], new ArrayList(resultsMap.entrySet()));
-
 
         when(pool.getResource()).thenReturn(jedis);
         when(jedis.hscan(TWEETS_HASH, SCAN_POINTER_START)).thenReturn(scanResults);
