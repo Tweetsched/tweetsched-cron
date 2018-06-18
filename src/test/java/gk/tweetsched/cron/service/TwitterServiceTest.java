@@ -28,8 +28,6 @@ public class TwitterServiceTest {
     @Mock
     private Twitter twitter;
     @Mock
-    private PropertyService propService;
-    @Mock
     private TwitterFactory twitterFactory;
     @InjectMocks
     TwitterService twitterService = new TwitterService();
