@@ -22,4 +22,4 @@ Cron jobs service for the Scheduled Tweets service.
   - OAUTH_CONSUMER_SECRET
   - OAUTH_ACCESS_TOKEN
   - OAUTH_ACCESS_TOKEN_SECRET
-- Run `java -jar target/tweetsched-cron-1.0.jar`
+- Run `java -jar target/tweetsched-cron-1.<<<real_number_of_build>>>.jar`
