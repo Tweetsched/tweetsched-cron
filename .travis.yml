@@ -1,12 +1,32 @@
 language: java
 jdk: oraclejdk8
 
-script:
-  mvn package
-  
 branches:
   only:
     - master
+
+before_install: mvn package -DbuildNumber=$TRAVIS_BUILD_NUMBER
+  
+before_deploy:
+ - export TRAVIS_TAG="1.$TRAVIS_BUILD_NUMBER"
+ - git config --local user.name "$USER_NAME"
+ - git config --local user.email "$USER_EMAIL"
+ - git tag "$TRAVIS_TAG" "$TRAVIS_COMMIT"
+ 
+ deploy:
+   provider: releases
+   tag_name: $TRAVIS_TAG
+   target_commitish: $TRAVIS_COMMIT
+   name: $TRAVIS_TAG
+   overwrite: true
+   skip_cleanup: true
+   api_key: $GITHUB_TOKEN
+   file_glob: true
+   file:
+     - target/tweetsched-cron-1.$TRAVIS_BUILD_NUMBER.jar
+   on:
+     branch: master
+     repo: Tweetsched/tweetsched-cron
 
 notifications:
   email:
