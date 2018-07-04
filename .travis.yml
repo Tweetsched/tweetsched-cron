@@ -2,10 +2,9 @@ language: java
 jdk: oraclejdk8
 
 branches:
-  only:
-    - master
+  only: master
 
-install: mvn package -DbuildNumber=$TRAVIS_BUILD_NUMBER
+before_install: mvn package -DbuildNumber=$TRAVIS_BUILD_NUMBER
   
 before_deploy:
  - export TRAVIS_TAG="1.$TRAVIS_BUILD_NUMBER"
