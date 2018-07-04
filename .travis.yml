@@ -2,7 +2,8 @@ language: java
 jdk: oraclejdk8
 
 branches:
-  only: master
+  only: 
+    - master
 
 before_install: mvn package -DbuildNumber=$TRAVIS_BUILD_NUMBER
   
