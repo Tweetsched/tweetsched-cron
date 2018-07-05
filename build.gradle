@@ -1,0 +1,70 @@
+apply plugin: 'java'
+
+group 'gk.tweetsched'
+version '1.' +  System.getProperty("buildNumber")
+
+def fatJarFolder = 'build/libs/'
+def distFolder = 'build/dist'
+def tempDistFolder = 'build/tmp-dist/'
+def configFolder = 'config/'
+def startupShFileName = 'startup.sh'
+def startupScript =
+"""#!/bin/bash
+
+nohup java -jar tweetsched-cron-${version}.jar &
+PID=\$!
+echo \$PID > pid.txt
+
+"""
+
+repositories {
+    mavenCentral()
+}
+
+test {
+    useTestNG() {
+        useDefaultListeners = true
+        suites 'src/test/resources/testng.xml'
+    }
+}
+
+task fatJar(type: Jar, dependsOn: test) {
+    manifest {
+        attributes 'Main-Class': 'gk.tweetsched.cron.TweetschedCronTrigger'
+    }
+    baseName = project.name
+    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
+}
+
+task copyJar(dependsOn: fatJar, type: Copy) {
+    from fatJarFolder
+    into tempDistFolder
+}
+
+task copyConf(dependsOn: copyJar, type: Copy) {
+    from configFolder
+    into tempDistFolder
+}
+
+task release(dependsOn: copyConf, type: Zip) {
+    doFirst {
+        def startupFile = new File(tempDistFolder + startupShFileName)
+        startupFile.text = startupScript
+    }
+    from tempDistFolder
+    into project.name
+    destinationDir file(distFolder)
+}
+
+dependencies {
+    compile 'org.springframework:spring-core:5.0.6.RELEASE'
+    compile 'org.springframework:spring-context:5.0.6.RELEASE'
+    compile 'redis.clients:jedis:2.9.0'
+    compile 'org.twitter4j:twitter4j-core:4.0.6'
+    compile 'com.google.code.gson:gson:2.8.5'
+    compile 'org.apache.logging.log4j:log4j-core:2.11.0'
+    compile 'org.apache.logging.log4j:log4j-api:2.11.0'
+    testCompile 'org.testng:testng:6.14.3'
+    testCompile 'org.mockito:mockito-all:1.10.19'
+}
