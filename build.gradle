@@ -19,6 +19,7 @@ echo \$PID > pid.txt
 
 repositories {
     mavenCentral()
+    maven { url "https://jitpack.io" }
 }
 
 test {
@@ -61,10 +62,11 @@ dependencies {
     compile 'org.springframework:spring-core:5.0.6.RELEASE'
     compile 'org.springframework:spring-context:5.0.6.RELEASE'
     compile 'redis.clients:jedis:2.9.0'
-    compile 'org.twitter4j:twitter4j-core:4.0.6'
     compile 'com.google.code.gson:gson:2.8.5'
     compile 'org.apache.logging.log4j:log4j-core:2.11.0'
     compile 'org.apache.logging.log4j:log4j-api:2.11.0'
+    compile 'com.sun.jersey:jersey-client:1.19.4'
+    compile 'com.github.Tweetsched:tweetsched-dto:1.33'
     testCompile 'org.testng:testng:6.14.3'
     testCompile 'org.mockito:mockito-all:1.10.19'
 }
