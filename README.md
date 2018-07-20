@@ -18,9 +18,6 @@ Cron jobs service for the Scheduled Tweets service.
   - REDIS_URL
   - REDIS_PORT
   - REDIS_PASSWORD
-  - OAUTH_CONSUMER_KEY
-  - OAUTH_CONSUMER_SECRET
-  - OAUTH_ACCESS_TOKEN
-  - OAUTH_ACCESS_TOKEN_SECRET
+  - PUBLISHER_URL
 - Copy "tweetsched.properties" file to folder with jar file
 - Run `java -jar build/libs/tweetsched-cron-1.<<<desired_number_of_build>>>.jar`

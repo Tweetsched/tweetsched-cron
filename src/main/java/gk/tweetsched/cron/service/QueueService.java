@@ -1,7 +1,7 @@
 package gk.tweetsched.cron.service;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
+import gk.tweetsched.dto.Tweet;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,6 @@ import static gk.tweetsched.cron.util.Constants.REDIS_URL;
 import static gk.tweetsched.cron.util.Constants.REDIS_PORT;
 import static gk.tweetsched.cron.util.Constants.REDIS_PASSWORD;
 import static gk.tweetsched.cron.util.Constants.TWEETS_HASH;
-import static gk.tweetsched.cron.util.Constants.MESSAGE;
 import static redis.clients.jedis.ScanParams.SCAN_POINTER_START;
 
 import java.util.List;
@@ -37,7 +36,7 @@ public class QueueService {
     @Autowired
     private PropertyService propService;
     @Autowired
-    private TwitterService twitterService;
+    private PublishService publishService;
     private JedisPool pool;
     private Gson gson = new Gson();
 
@@ -60,8 +59,8 @@ public class QueueService {
             }
             Entry<String, String> tweetEntry = result.get(0);
             String id = tweetEntry.getKey();
-            JsonObject tweet = gson.fromJson(tweetEntry.getValue(), JsonObject.class);
-            boolean isSuccess = twitterService.publishTweet(tweet.get(MESSAGE).getAsString());
+            Tweet tweet = gson.fromJson(tweetEntry.getValue(), Tweet.class);
+            boolean isSuccess = publishService.publish(tweet);
             if (isSuccess) {
                 jedis.hdel(TWEETS_HASH, id);
                 LOGGER.info("Tweet was posted");
