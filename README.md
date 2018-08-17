@@ -14,10 +14,12 @@ Cron jobs service for the Scheduled Tweets service.
 
 ## How to run locally:
 - Configure next app properties in "tweetsched.properties" file:
-  - CRON_EXPRESSION (optional)
-  - REDIS_URL
-  - REDIS_PORT
-  - REDIS_PASSWORD
-  - PUBLISHER_URL
+  - cron-expression (optional)
+  - redis-url
+  - redis-port
+  - redis-password
+  - publisher-url
+  - publisher-token
+  - publisher-secret
 - Copy "tweetsched.properties" file to folder with jar file
 - Run `java -jar build/libs/tweetsched-cron-1.<<<desired_number_of_build>>>.jar`
