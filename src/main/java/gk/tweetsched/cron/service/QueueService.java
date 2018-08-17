@@ -46,7 +46,7 @@ public class QueueService {
                 new JedisPoolConfig(),
                 propService.getProp(REDIS_URL),
                 Integer.valueOf(propService.getProp(REDIS_PORT)),
-                Protocol.DEFAULT_TIMEOUT,
+                Protocol.DEFAULT_TIMEOUT * 10,
                 propService.getProp(REDIS_PASSWORD));
     }
 
