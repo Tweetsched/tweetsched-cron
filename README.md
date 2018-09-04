@@ -14,7 +14,7 @@ Cron jobs service for the Scheduled Tweets service.
 
 ## How to run locally:
 - Configure next app properties in "tweetsched.properties" file:
-  - cron-expression (optional)
+  - cron-expression
   - redis-url
   - redis-port
   - redis-password
